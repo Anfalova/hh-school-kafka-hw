@@ -13,10 +13,16 @@ public class Sender {
     this.producer = producer;
   }
 
+  // добавила цикл, чтобы гарантировать отправку сообщения
+  // сообщение может быть отправлено более одного раза, но точно уйдет хотя бы один раз
   public void doSomething(String topic, String message) {
-    try {
-      producer.send(topic, message);
-    } catch (Exception ignore) {
+    boolean flag = false;
+    while (!flag) {
+      try {
+        producer.send(topic, message);
+        flag = true;
+      } catch (Exception ignore) {
+      }
     }
   }
 }
